@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="host"></div>
+<div id="message"></div>
+
+<button onclick="send()"> 이벤트 전송 </button>
+
+</body>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+    const socket = io('http://localhost:3000');
+
+    // 서버로부터 receive 이벤트를 수신받겠다.
+    socket.on('receive', (data) => {
+        document.getElementById("message").innerText += data;
+    });
+
+    function send(){
+        // 서버에 send 이벤트를 전송하겠다.
+        socket.emit("send", window.address + "에서 버튼을 클릭했습니다.");
+    }
+
+    window.address = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    document.getElementById("host").innerText = window.address + "에서 서빙되는 홈페이지";
+</script>
+</html>
